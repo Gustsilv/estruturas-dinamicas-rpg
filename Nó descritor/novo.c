@@ -3,29 +3,29 @@
 #include <string.h>
 #include <locale.h>
 
-// Estrutura que representa os dados que serão armazenados nos nós da lista
+// Estrutura que representa os dados que serÃ£o armazenados nos nÃ³s da lista
 typedef struct {
     char nome[100];
     char descricao[300];
-    int dropaItem; //0 para não e 1 para sim
-    int temMonstro; //0 para não e 1 para sim
-    int recuperaStatus; //0 para não e 1 para sim
+    int dropaItem; //0 para nÃ£o e 1 para sim
+    int temMonstro; //0 para nÃ£o e 1 para sim
+    int recuperaStatus; //0 para nÃ£o e 1 para sim
 } Dados;
 
-// Estrutura que representa um nó da lista encadeada
+// Estrutura que representa um nÃ³ da lista encadeada
 typedef struct No {
-    Dados dados; // Dados contidos no nó
-    struct No* prox; // Ponteiro para o próximo nó na lista
+    Dados dados; // Dados contidos no nÃ³
+    struct No* prox; // Ponteiro para o prÃ³ximo nÃ³ na lista
 } No;
 
 // Estrutura que atua como descritor da lista encadeada
 typedef struct {
-    int tamanho; // Quantidade de nós ativos na lista
-    No* primeiro; // Ponteiro para o primeiro nó (cabeça da lista)
-    No* ultimo; // Ponteiro para o último nó (cauda da lista)
+    int tamanho; // Quantidade de nÃ³s ativos na lista
+    No* primeiro; // Ponteiro para o primeiro nÃ³ (cabeÃ§a da lista)
+    No* ultimo; // Ponteiro para o Ãºltimo nÃ³ (cauda da lista)
 } No_descritor;
 
-// função para inicializar dados;
+// funÃ§Ã£o para inicializar dados;
 Dados constructor(char nome[], char descricao[], int dropaItem, int temMonstro, int recuperaStatus){
     Dados temp;
     strcpy(temp.nome, nome);
@@ -36,130 +36,140 @@ Dados constructor(char nome[], char descricao[], int dropaItem, int temMonstro, 
     return temp;
 }
 
-// Função para inicializar a lista
+// FunÃ§Ã£o para inicializar a lista
 void cria_lista(No_descritor* novaLista) {
     novaLista->tamanho = 0; // Inicializa o tamanho da lista como 0
-    novaLista->primeiro = NULL; // A lista começa vazia
-    novaLista->ultimo = NULL; // Não há último nó na lista vazia
+    novaLista->primeiro = NULL; // A lista comeÃ§a vazia
+    novaLista->ultimo = NULL; // NÃ£o hÃ¡ Ãºltimo nÃ³ na lista vazia
 }
 
-// Função para criar um novo nó com dados fornecidos
+// FunÃ§Ã£o para criar um novo nÃ³ com dados fornecidos
 No* cria_no(Dados novoDado) {
-    No* novoNo = (No*) malloc(sizeof(No)); // Aloca memória para um novo nó
+    No* novoNo = (No*) malloc(sizeof(No)); // Aloca memÃ³ria para um novo nÃ³
     if (novoNo) {
-        novoNo->dados = novoDado; // Armazena os dados no novo nó
-        novoNo->prox = NULL; // Inicializa o ponteiro para o próximo nó como NULL
-        return novoNo; // Retorna o novo nó criado
+        novoNo->dados = novoDado; // Armazena os dados no novo nÃ³
+        novoNo->prox = NULL; // Inicializa o ponteiro para o prÃ³ximo nÃ³ como NULL
+        return novoNo; // Retorna o novo nÃ³ criado
     }
-    else return NULL; // Retorna NULL se a alocação falhar
+    else return NULL; // Retorna NULL se a alocaÃ§Ã£o falhar
 }
 
-// Função para inserir um nó em uma lista que está vazia
+// FunÃ§Ã£o para inserir um nÃ³ em uma lista que estÃ¡ vazia
 void insere_no_na_lista_vazia(No* novoNo, No_descritor* ponteiroNoDescritor) {
-    ponteiroNoDescritor->primeiro = novoNo; // O novo nó se torna o primeiro
-    ponteiroNoDescritor->ultimo = novoNo; // O novo nó se torna o último
+    ponteiroNoDescritor->primeiro = novoNo; // O novo nÃ³ se torna o primeiro
+    ponteiroNoDescritor->ultimo = novoNo; // O novo nÃ³ se torna o Ãºltimo
     ponteiroNoDescritor->tamanho = 1; // Atualiza o tamanho da lista
 }
 
-// Função para inserir um nó no início da lista
+// FunÃ§Ã£o para inserir um nÃ³ no inÃ­cio da lista
 void insere_no_comeco(No_descritor* ponteiroNoDescritor, Dados novoDado) {
-    No* novoNo = cria_no(novoDado); // Cria um novo nó
-    if (novoNo) { // Verifica se o novo nó foi criado com sucesso
+    No* novoNo = cria_no(novoDado); // Cria um novo nÃ³
+    if (novoNo) { // Verifica se o novo nÃ³ foi criado com sucesso
         if (ponteiroNoDescritor->tamanho == 0) { // Se a lista estiver vazia
-            insere_no_na_lista_vazia(novoNo, ponteiroNoDescritor); // Insere no nó vazio
-        } else { // Se a lista não estiver vazia
-            No* primeiroNo = ponteiroNoDescritor->primeiro; // Salva o primeiro nó atual
-            ponteiroNoDescritor->primeiro = novoNo; // O novo nó se torna o primeiro
-            novoNo->prox = primeiroNo; // O novo nó aponta para o antigo primeiro nó
+            insere_no_na_lista_vazia(novoNo, ponteiroNoDescritor); // Insere no nÃ³ vazio
+        } else { // Se a lista nÃ£o estiver vazia
+            No* primeiroNo = ponteiroNoDescritor->primeiro; // Salva o primeiro nÃ³ atual
+            ponteiroNoDescritor->primeiro = novoNo; // O novo nÃ³ se torna o primeiro
+            novoNo->prox = primeiroNo; // O novo nÃ³ aponta para o antigo primeiro nÃ³
             ponteiroNoDescritor->tamanho++; // Incrementa o tamanho da lista
         }
     }
 }
 
-// Função para inserir um nó no final da lista
+// FunÃ§Ã£o para inserir um nÃ³ no final da lista
 void insere_no_final(No_descritor* ponteiroNoDescritor, Dados novoDado) {
-    No* novoNo = cria_no(novoDado); // Cria um novo nó
-    if (novoNo) { // Verifica se o novo nó foi criado com sucesso
+    No* novoNo = cria_no(novoDado); // Cria um novo nÃ³
+    if (novoNo) { // Verifica se o novo nÃ³ foi criado com sucesso
         if (ponteiroNoDescritor->tamanho == 0) { // Se a lista estiver vazia
-            insere_no_na_lista_vazia(novoNo, ponteiroNoDescritor); // Insere no nó vazio
-        } else { // Se a lista não estiver vazia
-            ponteiroNoDescritor->ultimo->prox = novoNo; // O atual último nó aponta para o novo nó
-            ponteiroNoDescritor->ultimo = novoNo; // O novo nó se torna o último
+            insere_no_na_lista_vazia(novoNo, ponteiroNoDescritor); // Insere no nÃ³ vazio
+        } else { // Se a lista nÃ£o estiver vazia
+            ponteiroNoDescritor->ultimo->prox = novoNo; // O atual Ãºltimo nÃ³ aponta para o novo nÃ³
+            ponteiroNoDescritor->ultimo = novoNo; // O novo nÃ³ se torna o Ãºltimo
             ponteiroNoDescritor->tamanho++; // Incrementa o tamanho da lista
         }
     }
 }
 
 
-// Função para inserir um nó em uma posição específica (meio da lista)
+// FunÃ§Ã£o para inserir um nÃ³ em uma posiÃ§Ã£o especÃ­fica (meio da lista)
 void insere_no_meio(No_descritor* ponteiroNoDescritor, Dados novoDado, int indice) {
-    // Se a lista estiver vazia, insira o nó como o único elemento
+    // Se a lista estiver vazia, insira o nÃ³ como o Ãºnico elemento
     if (ponteiroNoDescritor->tamanho == 0) {
-        No* novoNo = cria_no(novoDado); // Cria um novo nó
+        No* novoNo = cria_no(novoDado); // Cria um novo nÃ³
         if (novoNo) insere_no_na_lista_vazia(novoNo, ponteiroNoDescritor); // Insere na lista vazia
-    } else if ((ponteiroNoDescritor->tamanho - 1) < indice) { // Se o índice for maior que o tamanho
+    } else if ((ponteiroNoDescritor->tamanho - 1) < indice) { // Se o Ã­ndice for maior que o tamanho
         insere_no_final(ponteiroNoDescritor, novoDado); // Insere no final
-    } else if (indice == 0) { // Se o índice for 0, insira no início
-        insere_no_comeco(ponteiroNoDescritor, novoDado); // Insere no começo
-    } else { // Para inserção no meio
-        No* novoNo = cria_no(novoDado); // Cria um novo nó
-        No* anterior = ponteiroNoDescritor->primeiro; // Começa do primeiro nó
+    } else if (indice == 0) { // Se o Ã­ndice for 0, insira no inÃ­cio
+        insere_no_comeco(ponteiroNoDescritor, novoDado); // Insere no comeÃ§o
+    } else { // Para inserÃ§Ã£o no meio
+        No* novoNo = cria_no(novoDado); // Cria um novo nÃ³
+        No* anterior = ponteiroNoDescritor->primeiro; // ComeÃ§a do primeiro nÃ³
         int i = 1; // Contador para percorrer a lista
-        while (i < indice) { // Enquanto não chegar ao índice desejado
-            anterior = anterior->prox; // Move para o próximo nó
+        while (i < indice) { // Enquanto nÃ£o chegar ao Ã­ndice desejado
+            anterior = anterior->prox; // Move para o prÃ³ximo nÃ³
             i++;
         }
-        novoNo->prox = anterior->prox; // O novo nó aponta para o nó na posição desejada
-        anterior->prox = novoNo; // O nó anterior aponta para o novo nó
+        novoNo->prox = anterior->prox; // O novo nÃ³ aponta para o nÃ³ na posiÃ§Ã£o desejada
+        anterior->prox = novoNo; // O nÃ³ anterior aponta para o novo nÃ³
         ponteiroNoDescritor->tamanho++; // Incrementa o tamanho da lista
     }
 }
 
-// Função para substituir os dados de um nó em uma posição específica
+// FunÃ§Ã£o para substituir os dados de um nÃ³ em uma posiÃ§Ã£o especÃ­fica
 void substitui_no_indice(No_descritor* ponteiroNoDescritor, Dados novoDado, int indice) {
-    if (indice < ponteiroNoDescritor->tamanho) { // Verifica se o índice é válido
-        No* atual = ponteiroNoDescritor->primeiro; // Começa do primeiro nó
-        for (int i = 0; i < indice; i++) { // Percorre até o índice desejado
-            atual = atual->prox; // Move para o próximo nó
+    if (indice < ponteiroNoDescritor->tamanho) { // Verifica se o Ã­ndice Ã© vÃ¡lido
+        No* atual = ponteiroNoDescritor->primeiro; // ComeÃ§a do primeiro nÃ³
+        for (int i = 0; i < indice; i++) { // Percorre atÃ© o Ã­ndice desejado
+            atual = atual->prox; // Move para o prÃ³ximo nÃ³
         }
-        atual->dados = novoDado; // Substitui os dados do nó atual
+        atual->dados = novoDado; // Substitui os dados do nÃ³ atual
     }
 }
 
-// Função para mostrar todos os nós da lista
+// FunÃ§Ã£o para mostrar todos os nÃ³s da lista
 void mostra_lista_completa(No_descritor* enderecoNoDescritor) {
-    No* atual = enderecoNoDescritor->primeiro; // Começa do primeiro nó
-    int i = 0; // Contador de índice
-    printf("Temos %d campos\n", enderecoNoDescritor->tamanho); // Mostra a quantidade de nós
-    while (atual != NULL) { // Enquanto houver nós
-        printf("Indice %d: %s\n%s\n\n", i, atual->dados.nome, atual->dados.descricao); // Mostra o índice e o valor
-        atual = atual->prox; // Move para o próximo nó
+    No* atual = enderecoNoDescritor->primeiro; // ComeÃ§a do primeiro nÃ³
+    int i = 0; // Contador de Ã­ndice
+    printf("Temos %d campos\n", enderecoNoDescritor->tamanho); // Mostra a quantidade de nÃ³s
+    while (atual != NULL) { // Enquanto houver nÃ³s
+        printf("********** %s\n%s\n\n", atual->dados.nome, atual->dados.descricao); // Mostra o Ã­ndice e o valor
+        atual = atual->prox; // Move para o prÃ³ximo nÃ³
         i++;
     }
 }
 
-// Função para mostrar o nó em um índice específico
+// FunÃ§Ã£o para mostrar o nÃ³ em um Ã­ndice especÃ­fico
 void mostra_no_indice(No_descritor* ponteiroNoDescritor, int indice) {
-    if (indice < ponteiroNoDescritor->tamanho) { // Verifica se o índice é válido
-        No* atual = ponteiroNoDescritor->primeiro; // Começa do primeiro nó
-        int i = 0; // Contador de índice
-        while (i < indice) { // Percorre até o índice desejado
-            atual = atual->prox; // Move para o próximo nó
+    if (indice < ponteiroNoDescritor->tamanho) { // Verifica se o Ã­ndice Ã© vÃ¡lido
+        No* atual = ponteiroNoDescritor->primeiro; // ComeÃ§a do primeiro nÃ³
+        int i = 0; // Contador de Ã­ndice
+        while (i < indice) { // Percorre atÃ© o Ã­ndice desejado
+            atual = atual->prox; // Move para o prÃ³ximo nÃ³
             i++;
         }
-        printf("Indice %d: %s\n%s\n\n", i, atual->dados.nome, atual->dados.descricao); // Mostra o índice e o valor do nó
+        printf("Indice %d: %s\n%s\n\n", i, atual->dados.nome, atual->dados.descricao); // Mostra o Ã­ndice e o valor do nÃ³
     }
 }
 
-// Função para deletar o nó do começo da lista
+// FunÃ§Ã£o para deletar o nÃ³ do comeÃ§o da lista
+No deleta_no_comeco_e_retorna_dados(No_descritor* ponteiroNoDescritor) {
+    No* deletar = ponteiroNoDescritor->primeiro; // Ponto para o nÃ³ que serÃ¡ deletado
+    No temp = (*deletar);
+    ponteiroNoDescritor->primeiro = ponteiroNoDescritor->primeiro->prox; // Atualiza o primeiro nÃ³
+    free(deletar); // Libera a memÃ³ria do nÃ³ deletado
+    ponteiroNoDescritor->tamanho--; // Decrementa o tamanho da lista
+    return temp;
+}
+
+// FunÃ§Ã£o para deletar o nÃ³ do comeÃ§o da lista
 void deleta_no_comeco(No_descritor* ponteiroNoDescritor) {
-    No* deletar = ponteiroNoDescritor->primeiro; // Ponto para o nó que será deletado
-    ponteiroNoDescritor->primeiro = ponteiroNoDescritor->primeiro->prox; // Atualiza o primeiro nó
-    free(deletar); // Libera a memória do nó deletado
+    No* deletar = ponteiroNoDescritor->primeiro; // Ponto para o nÃ³ que serÃ¡ deletado
+    ponteiroNoDescritor->primeiro = ponteiroNoDescritor->primeiro->prox; // Atualiza o primeiro nÃ³
+    free(deletar); // Libera a memÃ³ria do nÃ³ deletado
     ponteiroNoDescritor->tamanho--; // Decrementa o tamanho da lista
 }
 
-// Função para deletar o nó do final da lista
+// FunÃ§Ã£o para deletar o nÃ³ do final da lista
 void deleta_no_final(No_descritor* ponteiroNoDescritor){
     No* anterior = ponteiroNoDescritor->primeiro;
     No* temp;
@@ -173,7 +183,7 @@ void deleta_no_final(No_descritor* ponteiroNoDescritor){
     ponteiroNoDescritor->tamanho--;
 }
 
-// Função para deletar o nó num indice específico da lista
+// FunÃ§Ã£o para deletar o nÃ³ num indice especÃ­fico da lista
 void deleta_no_indice(No_descritor* ponteiroNoDescritor, int indice){
     if(indice<ponteiroNoDescritor->tamanho){
         if(indice==0) deleta_no_comeco(ponteiroNoDescritor);
@@ -192,14 +202,14 @@ void deleta_no_indice(No_descritor* ponteiroNoDescritor, int indice){
     }
 }
 
-// Função para deletar todos os nós da lista
-void deleta_lista_completa(No_descritor* enderecoNoDescritor){ // recebe o ponteiro do Nó Descritor
+// FunÃ§Ã£o para deletar todos os nÃ³s da lista
+void deleta_lista_completa(No_descritor* enderecoNoDescritor){ // recebe o ponteiro do NÃ³ Descritor
     if(enderecoNoDescritor->tamanho>0) {
     No* atual = enderecoNoDescritor->primeiro; //cria um ponteiro auxiliar que recebe o primeiro item da lista
     No* deletar; 
     for(int i=0; i<enderecoNoDescritor->tamanho; i++){
         deletar = atual;  // guarda o atual num ponteiro auxiliar chamado deletar
-        atual = atual->prox; // o atual vira o próximo
+        atual = atual->prox; // o atual vira o prÃ³ximo
         free(deletar);
     }
     if(atual == NULL) printf("\nLista apagada!!!!\n");
@@ -209,40 +219,65 @@ void deleta_lista_completa(No_descritor* enderecoNoDescritor){ // recebe o ponte
     }
 }
 
+void inicializa_cenarios(No_descritor* mapa){
+    Dados cenario, bau, turno, oasis;
+
+    cenario = constructor("Era uma vez...", "Em um mundo onde a magia flui dos elementos, o reino de Eldorion esconde nas profundezas de suas ruÃ­nas a JOIA DE SERAPHEL.\nAquele que a possuir terÃ¡ o poder de controlar todos os elementos da natureza, um segredo perdido e cobiÃ§ado por forÃ§as sombrias...\n", 0, 0, 0);
+    insere_no_final(mapa, cenario);
+    cenario = constructor("Sua MissÃ£o:", "VocÃª Ã© Lira Valen, uma maga enviada pela Guilda dos Arcanos para recuperar a joia de Seraphel.\nVocÃª deve atravessar a FLORESTA DE SYLVARIM, enfrentar as criaturas da CAVERNA DO Ã‰TER e desvendar os mistÃ©rios das RUÃNAS DE ELDORION antes que as forÃ§as sombrias a obtenham.", 1, 0, 0);
+    insere_no_final(mapa, cenario);
+    // nesse de cima a gente poderia dropar as armas da Lira e jÃ¡ colocar no inventÃ¡rio. Tipo: "VocÃª recebeu uma espada!\n" "VocÃª recebeu 1 poÃ§Ã£o de hp\n" etc. todo o starter pack. E depois fazer assim: "seus itens foram adicionados ao inventÃ¡rio."
+    
+    cenario = constructor("Floresta", "VocÃª adentra a floresta de Sylvarim, onde a luz filtra-se pelas copas das Ã¡rvores, criando padrÃµes mÃ­sticos no chÃ£o. O ar Ã© denso com magia antiga, e criaturas espreitam nas sombras. Druidas observam de longe, sussurrando feitiÃ§os enquanto a vegetaÃ§Ã£o parece ter vida prÃ³pria.",0,0,0);
+    insere_no_final(mapa, cenario);
+    turno = constructor("HÃ¡ algo errado...", "Ã€ medida que avanÃ§a, o ar se torna pesado, e um som gutural ecoa pela escuridÃ£o. Sussurros de perigo te cercam. Das sombras, criaturas surgem, olhos brilhando com intenÃ§Ã£o predatÃ³ria. Seu coraÃ§Ã£o acelera. VocÃª estÃ¡ prestes a enfrentar monstros perigosos.", 0,1,0);
+    insere_no_final(mapa, turno);
+    bau = constructor("Bau", "Diante de vocÃª, um baÃº antigo emite um leve brilho. O som das dobradiÃ§as rangendo ecoa pela sala quando vocÃª o abre lentamente. Dentro, reluzem itens valiosos. A sensaÃ§Ã£o de descoberta Ã© palpÃ¡vel. VocÃª encontrou um tesouro raro!", 1, 0, 0);
+    insere_no_final(mapa, bau);
+    oasis = constructor("Pelos deuses!", "VocÃª encontra uma fonte mÃ¡gica cercada por cristais reluzentes. A Ã¡gua iridescente brilha sob a luz, emanando uma energia tranquilizadora. Ao se agachar para beber, uma onda de vitalidade envolve seu corpo, restaurando rapidamente seus HP e MP. Ã‰ um verdadeiro elixir da vida!", 0,0,1);
+    insere_no_final(mapa, oasis);
+
+    cenario = constructor("Caverna do Eter", "Ao cruzar o limiar da Caverna do Ã‰ter, a realidade se distorce. O tempo parece hesitar, o chÃ£o pulsa com uma energia etÃ©rea, e as paredes brilham com runas flutuantes. Cada passo ecoa em mÃºltiplas direÃ§Ãµes, como se vocÃª estivesse em mais de um lugar ao mesmo tempo.", 0, 0, 0);
+    insere_no_final(mapa, cenario);
+    turno = constructor("O que Ã© isso?", "O chÃ£o vibra sob seus pÃ©s, e um grito agudo corta o silÃªncio. De repente, monstros emergem da terra, com garras afiadas e presas prontas para atacar. NÃ£o hÃ¡ escapatÃ³ria: Ã© lutar ou perecer. Prepare-se para o combate.", 0,1,0);
+    insere_no_final(mapa, turno);
+
+    cenario = constructor("Ruinas de Eldorion", "As ruÃ­nas de Eldorion emergem da nÃ©voa, uma cidade antiga tomada pelo silÃªncio. Pedras quebradas e colunas caÃ­das escondem segredos ancestrais. Armadilhas mÃ¡gicas ativam ao menor toque, enquanto sussurros ecoam pelas paredes, lembrando de um poder perdido hÃ¡ eras.", 0, 0, 0);
+    insere_no_final(mapa, cenario);
+    bau = constructor("Bau", "Ao explorar um canto esquecido, vocÃª tropeÃ§a em um baÃº enferrujado, com inscriÃ§Ãµes antigas. Com um esforÃ§o, vocÃª consegue abri-lo. Dentro, reluzem itens preciosos que poderiam mudar o rumo de sua aventura. Um sorriso surge em seu rosto ? a sorte sorriu para vocÃª!", 1, 0, 0);
+    insere_no_final(mapa, bau);
+    turno = constructor("VocÃª continua caminhando, atÃ© que...", "Ao dobrar a esquina, uma presenÃ§a sombria se faz sentir. Criaturas monstruosas aparecem, bloqueando seu caminho, seus corpos deformados pelas energias malignas. O ar vibra com tensÃ£o, e vocÃª sabe que nÃ£o hÃ¡ como evitar a batalha.", 0,1,0);
+    insere_no_final(mapa, turno);
+}
+
 
 int main(){
     setlocale(LC_ALL, "");
-    No_descritor mapa; // minha lista é uma variável tipo nó descritor
+    No_descritor mapa; // minha lista Ã© uma variÃ¡vel tipo nÃ³ descritor
+    No cenario;
     cria_lista(&mapa);
-    // mo
-    Dados cenario, bau, turno, oasis;
-    cenario = constructor("Era uma vez...", "Em um mundo onde a magia flui dos elementos, o reino de Eldorion esconde nas profundezas de suas ruínas a JOIA DE SERAPHEL. Aquele que a possuir terá o poder de controlar todos os elementos da natureza, um segredo perdido e cobiçado por forças sombrias.", 0, 0, 0);
-    insere_no_final(&mapa, cenario);
-    cenario = constructor("Sua Missão:", "Você é Lira Valen, uma maga que domina luz e sombras, enviada pela Guilda dos Arcanos para recuperar a joia de Seraphel. Você deve atravessar Sylvarim, enfrentar as criaturas da Caverna do Éter e desvendar os mistérios das ruínas de Eldorion antes que forças sombrias a obtenham.", 1, 0, 0);
-    insere_no_final(&mapa, cenario);
-    // nesse de cima a gente poderia dropar as armas da Lira e já colocar no inventário. Tipo: "Você recebeu uma espada!\n" "Você recebeu 1 poção de hp\n" etc. todo o starter pack. E depois fazer assim: "seus itens foram adicionados ao inventário."
+    inicializa_cenarios(&mapa);
+
+    //a gente poderia perguntar o nome do jogador aqui, e inserir no nome do personagem ao invÃ©s de "Lira Valen".
     
-    cenario = constructor("Sylvarim", "Você adentra a floresta de Sylvarim, onde a luz filtra-se pelas copas das árvores, criando padrões místicos no chão. O ar é denso com magia antiga, e criaturas espreitam nas sombras. Druidas observam de longe, sussurrando feitiços enquanto a vegetação parece ter vida própria.",0,0,0);
-    insere_no_final(&mapa, cenario);
-    turno = constructor("Há algo errado...", "À medida que avança, o ar se torna pesado, e um som gutural ecoa pela escuridão. Sussurros de perigo te cercam. Das sombras, criaturas surgem, olhos brilhando com intenção predatória. Seu coração acelera. Você está prestes a enfrentar monstros perigosos.", 0,1,0);
-    insere_no_final(&mapa, turno);
+    while(mapa.tamanho){
+        cenario = deleta_no_comeco_e_retorna_dados(&mapa);
 
-    bau = constructor("Bau", "Diante de você, um baú antigo emite um leve brilho. O som das dobradiças rangendo ecoa pela sala quando você o abre lentamente. Dentro, reluzem itens valiosos. A sensação de descoberta é palpável. Você encontrou um tesouro raro!", 1, 0, 0);
-    insere_no_final(&mapa, bau);
-    oasis = constructor("Pelos deuses!", "Você encontra uma fonte mágica cercada por cristais reluzentes. A água iridescente brilha sob a luz, emanando uma energia tranquilizadora. Ao se agachar para beber, uma onda de vitalidade envolve seu corpo, restaurando rapidamente seus HP e MP. É um verdadeiro elixir da vida!", 0,0,1);
-    insere_no_final(&mapa, oasis);
-
-    cenario = constructor("Caverna do Eter", "Ao cruzar o limiar da Caverna do Éter, a realidade se distorce. O tempo parece hesitar, o chão pulsa com uma energia etérea, e as paredes brilham com runas flutuantes. Cada passo ecoa em múltiplas direções, como se você estivesse em mais de um lugar ao mesmo tempo.", 0, 0, 0);
-    insere_no_final(&mapa, cenario);
-    turno = constructor("O que é isso?", "O chão vibra sob seus pés, e um grito agudo corta o silêncio. De repente, monstros emergem da terra, com garras afiadas e presas prontas para atacar. Não há escapatória: é lutar ou perecer. Prepare-se para o combate.", 0,1,0);
-    insere_no_final(&mapa, turno);
-
-    cenario = constructor("Ruinas de Eldorion", "As ruínas de Eldorion emergem da névoa, uma cidade antiga tomada pelo silêncio. Pedras quebradas e colunas caídas escondem segredos ancestrais. Armadilhas mágicas ativam ao menor toque, enquanto sussurros ecoam pelas paredes, lembrando de um poder perdido há eras.", 0, 0, 0);
-    insere_no_final(&mapa, cenario);
-    bau = constructor("Bau", "Ao explorar um canto esquecido, você tropeça em um baú enferrujado, com inscrições antigas. Com um esforço, você consegue abri-lo. Dentro, reluzem itens preciosos que poderiam mudar o rumo de sua aventura. Um sorriso surge em seu rosto ? a sorte sorriu para você!", 1, 0, 0);
-    insere_no_final(&mapa, bau);
-    turno = constructor("Você continua caminhando, até que...", "Ao dobrar a esquina, uma presença sombria se faz sentir. Criaturas monstruosas aparecem, bloqueando seu caminho, seus corpos deformados pelas energias malignas. O ar vibra com tensão, e você sabe que não há como evitar a batalha.", 0,1,0);
-    insere_no_final(&mapa, turno);
+        printf("\n| %s |\n", cenario.dados.nome);
+        printf("\n%s\n", cenario.dados.descricao);
+        
+        if(cenario.dados.dropaItem){
+            //codigo referente Ã  dropagem de item
+        }
+        if(cenario.dados.temMonstro){
+            //codigo referente ao turno
+        }
+        if(cenario.dados.recuperaStatus){
+            //codigo referente ao oasis
+        }
+    }
+    
+    
     
     mostra_lista_completa(&mapa);
 
