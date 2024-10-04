@@ -35,8 +35,6 @@ typedef struct lista LISTA;
 LISTA *lista_inicia();
 void lista_insere(LISTA *lista, const char *nome, int hp, int mp, int classe);
 void lista_imprime(LISTA *l);
-void brincadeira(LISTA *l);
-void contar(LISTA *lista);
 void lista_remover(LISTA *l, const char *nome);
 node *atPos(LISTA *l, int index);
 void lista_libera(LISTA *l);
@@ -132,49 +130,48 @@ void iniciarBatalha(LISTA *lista) {
             continue;
         }
 
-        // Se for a vez do joga
+        // Se for a vez do jogador
         if (strcmp(atual->nome, "Jogador") == 0) {
             node *inimigo = NULL;
-            do {
-                printf("Escolha sua ação: 1) Atacar 2) Usar Magia 3) Usar Item\n");
-                scanf("%d", &acao);
+            printf("Escolha sua ação: 1) Atacar 2) Usar Magia 3) Usar Item\n");
+            scanf("%d", &acao);
 
-                switch (acao) {
-                    case 1:  // Atacar
-                        inimigo = selecionarInimigo(lista);
-                        if (inimigo != NULL) {
-                            atacar(atual, inimigo);
+            switch (acao) {
+                case 1:  // Atacar
+                    inimigo = selecionarInimigo(lista);
+                    if (inimigo != NULL) {
+                        atacar(atual, inimigo);
+                    }
+                    break;
+
+                case 2:  // Usar Magia
+                    if (atual->classe == 1) {
+                        printf("Escolha a magia:\n");
+                        for (int i = 0; i < 2; i++) {
+                            printf("%d) %s (Custo MP: %d, Dano: %d)\n", i + 1, magias[i].nome, magias[i].custoMp, magias[i].dano);
                         }
-                        break;
+                        printf("Selecione a magia ou 0 para voltar: ");
+                        scanf("%d", &escolhaMagia);
 
-                    case 2:  // Usar Magia
-                        if (atual->classe == 1) {
-                            printf("Escolha a magia:\n");
-                            for (int i = 0; i < 2; i++) {
-                                printf("%d) %s (Custo MP: %d, Dano: %d)\n", i + 1, magias[i].nome, magias[i].custoMp, magias[i].dano);
+                        if (escolhaMagia > 0 && escolhaMagia <= 2) {
+                            inimigo = selecionarInimigo(lista);
+                            if (inimigo != NULL) {
+                                usarMagia(atual, inimigo, magias[escolhaMagia - 1]);
                             }
-                            printf("Selecione a magia ou 0 para voltar: ");
-                            scanf("%d", &escolhaMagia);
-
-                            if (escolhaMagia > 0 && escolhaMagia <= 2) {
-                                inimigo = selecionarInimigo(lista);
-                                if (inimigo != NULL) {
-                                    usarMagia(atual, inimigo, magias[escolhaMagia - 1]);
-                                }
-                            }
-                        } else {
-                            printf("Você não pode usar magia.\n");
                         }
-                        break;
+                    } else {
+                        printf("Você não pode usar magia.\n");
+                    }
+                    break;
 
-                    case 3:  // Usar Item
-                        usarItem(atual);  // Usar item no jogador
-                        break;
+                case 3:  // Usar Item
+                    usarItem(atual);  // Usar item no jogador
+                    break;
 
-                    default:
-                        printf("Ação inválida.\n");
-                }
-            } while (acao < 1 || acao > 3);
+                default:
+                    printf("Ação inválida. Escolha novamente.\n");
+                    continue;  // Reiniciar o ciclo apenas se for inválido
+            }
         } else {
             // Os inimigos atacam automaticamente o jogador
             node *jogador = lista->inicio;
@@ -188,8 +185,6 @@ void iniciarBatalha(LISTA *lista) {
         atual = atual->prox;
     }
 }
-
-
 
 
 
@@ -254,15 +249,31 @@ void lista_remover(LISTA *l, const char *nome) {
             if (temp == l->fim) {
                 l->fim = temp->ant; // Atualiza o fim da lista
             }
+            if (l->tamanho == 1) {
+                // Se restar apenas um personagem, encerra a batalha
+                l->inicio = l->fim = NULL;
+                free(temp);
+                l->tamanho--;
+                printf("Batalha encerrada. O jogador venceu!\n");
+                return;
+            }
+
             temp->ant->prox = temp->prox; // Atualiza o próximo do anterior
             temp->prox->ant = temp->ant; // Atualiza o anterior do próximo
             free(temp); // Libera a memória do nó removido
             l->tamanho--; // Decrementa o tamanho da lista
+
+            if (l->tamanho == 1) {
+                printf("A batalha está prestes a terminar. Só resta o jogador e um inimigo!\n");
+            }
             return; // Sai da função após remover o nó
         }
         temp = temp->prox;
     } while (temp != l->inicio);
 }
+
+
+
 
 // Função que retorna o nó na posição especificada
 node *atPos(LISTA *l, int index) {
