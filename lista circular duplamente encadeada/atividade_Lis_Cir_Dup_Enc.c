@@ -132,7 +132,7 @@ void iniciarBatalha(LISTA *lista) {
             continue;
         }
 
-        // Se for a vez do jogador
+        // Se for a vez do joga
         if (strcmp(atual->nome, "Jogador") == 0) {
             node *inimigo = NULL;
             do {
